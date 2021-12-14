@@ -8,23 +8,17 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+class Users(Base):
+    __tablename__ = 'user'
+    id= Column(Integer, primary_key = True)
+    user_name = Column(String(30), nullable = False)
+    name = Column(String(40), nullable = False)
+    lastname= Column(String(40))
+    email = Column(String(12), unique = True)
+   
+# class Profile(Base):
+#     __tablename__ = 'profile'
+#     biografy 
 
     def to_dict(self):
         return {}
