@@ -11,11 +11,11 @@ Base = declarative_base()
 class Users(Base):
     __tablename__ = 'user'
     id= Column(Integer, primary_key = True)
-    user_name = Column(String(30), nullable = False)
-    name = Column(String(40), nullable = False)
-    lastname= Column(String(40))
-    email = Column(String(12), unique = True)
-    profile = relationship("Profile", back_populates = "parent")
+    user_name = Column(String(30), nullable = False, unique = True)
+    name = Column(String(40), nullable = False, unique = True)
+    lastname= Column(String(40), nullable = False)
+    email = Column(String(12), nullable = False, unique = True)
+    profile = relationship("Profile", back_populates = "profile", uselist = False)
    
 class Profile(Base):
     __tablename__ = 'profile'
@@ -27,13 +27,17 @@ class Profile(Base):
     story = Column(String)
     followers = Column(Integer)
     following = Column(Integer)
-    user_id = Column(Integer, ForeignKey("user.id"))
-    user = relationship("Users", back_populates = "children")
+    user_id = Column(Integer, ForeignKey("user.id"), nullable = False)
+    post = relationship("Post", back_populates = "post", uselist = True)
+
+
 
 class Favorites(Base):
     __tablename__ = 'favorites'
     id = Column(Integer, primary_key = True)
     fav = Column(String)
+    save = relationship("Save", back_populates = "save", uselist = False)
+    post = relationship("Post", back_populates = "post", uselist = True)
     
 
 class Post(Base):
@@ -44,8 +48,7 @@ class Post(Base):
     city_adress = Column(String)
     likes = Column(Integer)
     profile_id = Column(Integer, ForeignKey("profile.id"))
-    save_id = Column(Integer, ForeignKey("save.id"))
-    save = relationship("child")
+    favorites = Column(Integer, ForeignKey("favorites.id")) 
 
 class Reel(Base):
     __tablename__ = 'reel'
@@ -54,8 +57,7 @@ class Reel(Base):
     comment = Column(String)
     likes = Column(Integer)
     profile_id = Column(Integer, ForeignKey("profile.id"))
-    save_id = Column(Integer, ForeignKey("save.id"))
-    save = relationship("child")
+    favorites = Column(Integer, ForeignKey("favorites.id"))
 
 class Story(Base):
     __tablename__ = 'story'
